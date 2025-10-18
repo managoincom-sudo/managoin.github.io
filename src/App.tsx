@@ -5,6 +5,23 @@ import {
   Brain, ChevronRight, BarChart2, DollarSign
 } from 'lucide-react';
 
+/*
+  --------------------------------------------------------------------------------------
+  Managoin — Assembled Demo App (single-file)
+  --------------------------------------------------------------------------------------
+  This single TSX file stitches together:
+  - Landing page (trimmed from your managoin-landing.tsx)
+  - Interactive upload demo (from managoin-demo.tsx)
+  - Dashboard (from buildmate-dashboard.tsx)
+  - Gantt / Resource / Budget views (from the cleaned ManagoinGanttAdvanced)
+
+  Usage: drop into a React + Tailwind project (Vite/Next). No external state libs required.
+  Navigation is handled via local state (view: 'landing' | 'demo' | 'dashboard' | 'gantt').
+*/
+
+// -------------------------------------------------------------------------------------
+// Shared Brand Icon
+// -------------------------------------------------------------------------------------
 const BrandMark: React.FC<{ size?: number }> = ({ size = 32 }) => (
   <div className="inline-flex items-center justify-center rounded-xl shadow-sm" aria-label="Managoin">
     <svg viewBox="0 0 256 256" style={{ width: size, height: size }} aria-hidden="true">
@@ -21,6 +38,9 @@ const BrandMark: React.FC<{ size?: number }> = ({ size = 32 }) => (
   </div>
 );
 
+// -------------------------------------------------------------------------------------
+// View Shell (Top Nav)
+// -------------------------------------------------------------------------------------
 export default function ManagoinApp() {
   const [view, setView] = useState<'landing' | 'demo' | 'dashboard' | 'gantt'>('landing');
   const [projectName] = useState('Tower B, Phase 1');
@@ -43,7 +63,7 @@ export default function ManagoinApp() {
           <div className="flex items-center gap-3">
             {view!=='demo' && (
               <button className="hidden md:inline px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50" onClick={()=>setView('demo')}>
-                Watch 60-sec Demo
+                Watch 60‑sec Demo
               </button>
             )}
             <button className="group inline-flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700" onClick={()=>setView('dashboard')}>
@@ -61,12 +81,14 @@ export default function ManagoinApp() {
   );
 }
 
-// Landing
+// -------------------------------------------------------------------------------------
+// Landing (trimmed, based on managoin-landing.tsx)
+// -------------------------------------------------------------------------------------
 const Landing: React.FC<{ onStartDemo: ()=>void }> = ({ onStartDemo }) => {
   const features = [
     { icon: <Brain className="w-5 h-5"/>, title: 'AI document analysis', desc: 'Extract deadlines, clauses and obligations from NEC/JCT files.' },
-    { icon: <AlertTriangle className="w-5 h-5"/>, title: 'Risk detection', desc: 'Spot missing sign-offs, expired insurance and delay drivers.' },
-    { icon: <Calendar className="w-5 h-5"/>, title: 'Smart scheduling', desc: 'Auto look-ahead & critical path markers for site teams.' },
+    { icon: <AlertTriangle className="w-5 h-5"/>, title: 'Risk detection', desc: 'Spot missing sign‑offs, expired insurance and delay drivers.' },
+    { icon: <Calendar className="w-5 h-5"/>, title: 'Smart scheduling', desc: 'Auto look‑ahead & critical path markers for site teams.' },
     { icon: <Users className="w-5 h-5"/>, title: 'Subcontractor tracking', desc: 'Performance, submissions and compliance in one place.' },
   ];
   return (
@@ -78,10 +100,10 @@ const Landing: React.FC<{ onStartDemo: ()=>void }> = ({ onStartDemo }) => {
             AI copilot for UK construction PMs
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">Keep jobsites moving with <span className="text-blue-600">Managoin</span></h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Automate RFIs, minutes and look-ahead programmes. Spot risks early across NEC/JCT, cut admin and keep site teams in sync.</p>
+          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Automate RFIs, minutes and look‑ahead programmes. Spot risks early across NEC/JCT, cut admin and keep site teams in sync.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <button className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 shadow-lg hover:shadow-xl transition" onClick={onStartDemo}>
-              Watch 60-sec demo <ChevronRight className="w-4 h-4 -mr-0.5 group-hover:translate-x-0.5 transition"/>
+              Watch 60‑sec demo <ChevronRight className="w-4 h-4 -mr-0.5 group-hover:translate-x-0.5 transition"/>
             </button>
             <a href="#early-access" className="px-6 py-3 bg-white border border-gray-300 rounded-xl font-medium hover:bg-gray-50">Get early access</a>
           </div>
@@ -111,7 +133,9 @@ const Landing: React.FC<{ onStartDemo: ()=>void }> = ({ onStartDemo }) => {
   );
 };
 
-// Interactive Demo (trim)
+// -------------------------------------------------------------------------------------
+// Interactive Demo (based on managoin-demo.tsx)
+// -------------------------------------------------------------------------------------
 const InteractiveDemo: React.FC<{ onViewResults: ()=>void }> = ({ onViewResults }) => {
   const demoSteps = [
     { title:'Welcome to Managoin', description:'See how AI transforms construction project management in 60 seconds', action:'Start Demo' },
@@ -134,13 +158,14 @@ const InteractiveDemo: React.FC<{ onViewResults: ()=>void }> = ({ onViewResults 
     if (step === 2) {
       setProcessing(true); setProgress(0);
       const stages = [20, 40, 60, 80, 100];
-      let i=0; const id = setInterval(()=>{ setProgress(stages[i]); i++; if(i>=stages.length){ clearInterval(id); setProcessing(false); setStep(3); } }, 600);
+      let i=0; const id = setInterval(()=>{ setProgress(stages[i]); i++; if(i>=stages.length){ clearInterval(id); setProcessing(false); setStep(3); } }, 700);
       return ()=>clearInterval(id);
     }
   },[step]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
+      {/* Steps header */}
       <div className="flex items-center justify-between mb-10">
         {demoSteps.map((s, idx) => (
           <div key={idx} className="flex items-center flex-1">
@@ -153,6 +178,7 @@ const InteractiveDemo: React.FC<{ onViewResults: ()=>void }> = ({ onViewResults 
         ))}
       </div>
 
+      {/* Step panes */}
       {step===0 && (
         <div className="text-center py-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6"><Sparkles className="w-10 h-10 text-blue-600"/></div>
@@ -189,16 +215,16 @@ const InteractiveDemo: React.FC<{ onViewResults: ()=>void }> = ({ onViewResults 
             <div className="mb-8">
               <div className="w-20 h-20 mx-auto mb-4 relative">
                 <div className="absolute inset-0 border-4 border-blue-200 rounded-full" />
-                <div className="absolute inset-0 border-4 rounded-full border-t-transparent border-blue-600 animate-spin" />
+                <div className={`absolute inset-0 border-4 rounded-full border-t-transparent ${processing?'border-blue-600 animate-spin':'border-green-500'}`} />
                 <Brain className="w-10 h-10 text-blue-600 absolute inset-0 m-auto" />
               </div>
-              <div className="text-lg font-semibold text-gray-900 mb-2">Processing document…</div>
+              <div className="text-lg font-semibold text-gray-900 mb-2">{processing? 'Processing document…' : 'Complete'}</div>
               <div className="text-sm text-gray-500">Please wait while we analyze your contract</div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden mb-2">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all" style={{ width: `60%` }} />
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all" style={{ width: `${progress}%` }} />
             </div>
-            <div className="text-sm font-medium text-gray-600">60% complete</div>
+            <div className="text-sm font-medium text-gray-600">{progress}% complete</div>
           </div>
         </div>
       )}
@@ -208,6 +234,14 @@ const InteractiveDemo: React.FC<{ onViewResults: ()=>void }> = ({ onViewResults 
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6"><CheckCircle className="w-10 h-10 text-green-600"/></div>
           <h2 className="text-3xl font-bold mb-2">{demoSteps[3].title}</h2>
           <p className="text-lg text-gray-600 mb-8">{demoSteps[3].description}</p>
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-gray-200 p-8 shadow-lg mb-8 text-left">
+            <div className="grid grid-cols-2 gap-4">
+              <Info label="Document" value={sample.document} />
+              <Info label="Contract Type" value={sample.contractType} />
+              <Info label="Contract Value" value={<span className="text-green-600 font-semibold">{sample.value}</span>} />
+              <Info label="Summary" value={<span>{sample.deadlines} deadlines · {sample.risks} risks · {sample.obligations} obligations</span>} />
+            </div>
+          </div>
           <button onClick={onViewResults} className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all">
             View Results <ArrowRight className="w-5 h-5"/>
           </button>
@@ -224,7 +258,9 @@ const Info: React.FC<{label:string; value: React.ReactNode}> = ({label, value}) 
   </div>
 );
 
-// Early Access Form (Web3Forms only — deposit removed)
+// -------------------------------------------------------------------------------------
+// Early Access Form (Web3Forms)
+// -------------------------------------------------------------------------------------
 const EarlyAccessForm: React.FC = () => {
   const [form, setForm] = useState({ name: '', email: '', company: '', role: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -253,8 +289,8 @@ const EarlyAccessForm: React.FC = () => {
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const json = await res.json();
 
+      const json = await res.json();
       if (json.success) {
         setStatus('success');
         setMsg('Thanks — you’re on the list. We’ll be in touch soon.');
@@ -273,7 +309,7 @@ const EarlyAccessForm: React.FC = () => {
     return (
       <div className="p-4 border border-green-200 bg-green-50 rounded-lg text-green-700 flex items-center gap-2">
         <CheckCircle className="w-5 h-5" />
-        <span className="font-medium">{msg}</span>
+        <span>{msg}</span>
       </div>
     );
   }
@@ -284,7 +320,6 @@ const EarlyAccessForm: React.FC = () => {
       <input name="email" type="email" value={form.email} onChange={onChange} required placeholder="Work email" className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <input name="company" value={form.company} onChange={onChange} placeholder="Company" className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <input name="role" value={form.role} onChange={onChange} placeholder="Role" className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-
       <div className="md:col-span-4 flex items-center justify-between">
         <label className="text-xs text-gray-500">By joining, you agree to be contacted about early access.</label>
         <button type="submit" disabled={status==='loading'} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60">
@@ -296,7 +331,9 @@ const EarlyAccessForm: React.FC = () => {
   );
 };
 
-// Dashboard (trim)
+// -------------------------------------------------------------------------------------
+// Dashboard (based on buildmate-dashboard.tsx)
+// -------------------------------------------------------------------------------------
 const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ onOpenGantt, projectName }) => {
   const documents = [
     { id: 1, name: 'Contract_Main_Rev2.pdf', status: 'processed', time: '2 hours ago', size: '2.4 MB', pages: 45 },
@@ -315,6 +352,7 @@ const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ o
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      {/* Header row */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">{projectName}</h2>
@@ -328,6 +366,7 @@ const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ o
         </div>
       </div>
 
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Stat title="Total Documents" value="24" icon={<FileText className="w-5 h-5 text-blue-600"/>} trend={{dir:'up', label:'+3 this week'}} />
         <Stat title="Active Risks" value="5" icon={<AlertTriangle className="w-5 h-5 text-orange-600"/>} sub="2 high priority" />
@@ -335,6 +374,7 @@ const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ o
         <Stat title="Project Progress" value="73%" icon={<CheckCircle className="w-5 h-5 text-green-600"/>} bar={73} />
       </div>
 
+      {/* Timeline + Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
@@ -374,6 +414,7 @@ const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ o
         </div>
       </div>
 
+      {/* Documents */}
       <div className="bg-white rounded-xl border border-gray-200">
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
           <h3 className="text-lg font-semibold">📄 Recent Uploads</h3>
@@ -406,6 +447,7 @@ const Dashboard: React.FC<{ onOpenGantt: ()=>void; projectName: string }> = ({ o
         </div>
       </div>
 
+      {/* Risks */}
       <div className="bg-white rounded-xl border border-gray-200">
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
           <h3 className="text-lg font-semibold">⚠️ Risk Register</h3>
@@ -459,7 +501,9 @@ const CardLine: React.FC<{color:'green'|'red'|'yellow'|'blue'; title:string; tex
   </div>
 );
 
-// Gantt (lightweight illustrative)
+// -------------------------------------------------------------------------------------
+// Gantt Suite (based on ManagoinGanttAdvanced cleaned version)
+// -------------------------------------------------------------------------------------
 const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
   type Status = 'completed' | 'in-progress' | 'upcoming';
   interface CommentItem { id: number; user: string; text: string; time: string; avatar: string; }
@@ -482,23 +526,31 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
 
   const project = {
     name: 'Tower B, Phase 1', startDate: new Date(2025,9,1), endDate: new Date(2026,2,30), progress: 73,
-    totalBudget: 2450000, spentBudget: 1788500, forecastBudget: 2520000,
+    totalBudget: 2_450_000, spentBudget: 1_788_500, forecastBudget: 2_520_000,
   } as const;
 
   const tasks: Task[] = [
     { id:1, name:'Site Preparation', phase:'Foundation', startDate:new Date(2025,9,1), endDate:new Date(2025,9,15), baselineStart:new Date(2025,9,1), baselineEnd:new Date(2025,9,15), progress:100, status:'completed', assignee:'Groundworks Ltd', assigneeId:1, budget:45000, spent:45000, dependencies:[], critical:false, comments:[{id:1,user:'John Smith',text:'Site cleared ahead of schedule',time:'2 weeks ago',avatar:'JS'}], riskScore:2, weatherImpact:null },
     { id:2, name:'Foundation Excavation', phase:'Foundation', startDate:new Date(2025,9,16), endDate:new Date(2025,9,28), baselineStart:new Date(2025,9,16), baselineEnd:new Date(2025,9,28), progress:100, status:'completed', assignee:'Groundworks Ltd', assigneeId:1, budget:85000, spent:87200, dependencies:[1], critical:true, comments:[], riskScore:4, weatherImpact:null },
-    { id:3, name:'Foundation Pour', phase:'Foundation', startDate:new Date(2025,9,29), endDate:new Date(2025,10,12), baselineStart:new Date(2025,9,29), baselineEnd:new Date(2025,10,10), progress:85, status:'in-progress', assignee:'Apex Concrete', assigneeId:2, budget:125000, spent:98000, dependencies:[2], critical:true, comments:[{id:2,user:'Sarah Chen',text:'Weather delay - 2 days behind',time:'1 day ago',avatar:'SC'}], riskScore:7, weatherImpact:{delay:2, description:'Heavy rain expected — pour reschedule risk'} },
+    { id:3, name:'Foundation Pour', phase:'Foundation', startDate:new Date(2025,9,29), endDate:new Date(2025,10,12), baselineStart:new Date(2025,9,29), baselineEnd:new Date(2025,10,10), progress:85, status:'in-progress', assignee:'Apex Concrete', assigneeId:2, budget:125000, spent:98000, dependencies:[2], critical:true, comments:[{id:2,user:'Sarah Chen',text:'Weather delay - 2 days behind',time:'1 day ago',avatar:'SC'},{id:3,user:'Mike Johnson',text:'@Sarah Can we add weekend shifts?',time:'8 hours ago',avatar:'MJ'}], riskScore:7, weatherImpact:{delay:2, description:'Heavy rain expected — pour reschedule risk'} },
     { id:4, name:'Steel Frame Installation', phase:'Structure', startDate:new Date(2025,10,13), endDate:new Date(2025,10,30), baselineStart:new Date(2025,10,11), baselineEnd:new Date(2025,10,28), progress:45, status:'in-progress', assignee:'Steel Solutions', assigneeId:3, budget:285000, spent:142000, dependencies:[3], critical:true, comments:[], riskScore:6, weatherImpact:null },
+    { id:5, name:'Floor Slabs - Level 1', phase:'Structure', startDate:new Date(2025,11,1), endDate:new Date(2025,11,10), baselineStart:new Date(2025,10,29), baselineEnd:new Date(2025,11,8), progress:0, status:'upcoming', assignee:'Apex Concrete', assigneeId:2, budget:95000, spent:0, dependencies:[4], critical:true, comments:[], riskScore:3, weatherImpact:null },
+    { id:6, name:'Floor Slabs - Level 2', phase:'Structure', startDate:new Date(2025,11,11), endDate:new Date(2025,11,20), baselineStart:new Date(2025,11,9), baselineEnd:new Date(2025,11,18), progress:0, status:'upcoming', assignee:'Apex Concrete', assigneeId:2, budget:95000, spent:0, dependencies:[5], critical:true, comments:[], riskScore:3, weatherImpact:null },
+    { id:7, name:'HVAC First Fix', phase:'MEP', startDate:new Date(2025,11,21), endDate:new Date(2026,0,15), baselineStart:new Date(2025,11,19), baselineEnd:new Date(2026,0,15), progress:0, status:'upcoming', assignee:'BuildPro HVAC', assigneeId:4, budget:245000, spent:0, dependencies:[6], critical:false, comments:[], riskScore:4, weatherImpact:null },
+    { id:8, name:'Electrical First Fix', phase:'MEP', startDate:new Date(2025,11,21), endDate:new Date(2026,0,10), baselineStart:new Date(2025,11,19), baselineEnd:new Date(2026,0,10), progress:0, status:'upcoming', assignee:'Metro Electrical', assigneeId:5, budget:185000, spent:0, dependencies:[6], critical:false, comments:[], riskScore:4, weatherImpact:null },
+    { id:9, name:'Internal Walls - Drywall', phase:'Finishes', startDate:new Date(2026,0,16), endDate:new Date(2026,1,5), baselineStart:new Date(2026,0,16), baselineEnd:new Date(2026,1,5), progress:0, status:'upcoming', assignee:'Interior Solutions', assigneeId:6, budget:165000, spent:0, dependencies:[7,8], critical:true, comments:[], riskScore:5, weatherImpact:null },
+    { id:10, name:'Painting & Decorating', phase:'Finishes', startDate:new Date(2026,1,6), endDate:new Date(2026,1,25), baselineStart:new Date(2026,1,6), baselineEnd:new Date(2026,1,25), progress:0, status:'upcoming', assignee:'Paint Pro', assigneeId:7, budget:85000, spent:0, dependencies:[9], critical:false, comments:[], riskScore:2, weatherImpact:null },
+    { id:11, name:'Final Inspections', phase:'Completion', startDate:new Date(2026,2,1), endDate:new Date(2026,2,15), baselineStart:new Date(2026,2,1), baselineEnd:new Date(2026,2,15), progress:0, status:'upcoming', assignee:'SafeGuard Systems', assigneeId:8, budget:35000, spent:0, dependencies:[10], critical:true, comments:[], riskScore:4, weatherImpact:null },
   ];
 
   const contractors: Contractor[] = [
-    { id:1, name:'Groundworks Ltd', color:'#3B82F6' }, { id:2, name:'Apex Concrete', color:'#10B981' }, { id:3, name:'Steel Solutions', color:'#8B5CF6' },
+    { id:1, name:'Groundworks Ltd', color:'#3B82F6' }, { id:2, name:'Apex Concrete', color:'#10B981' }, { id:3, name:'Steel Solutions', color:'#8B5CF6' }, { id:4, name:'BuildPro HVAC', color:'#F59E0B' }, { id:5, name:'Metro Electrical', color:'#EF4444' }, { id:6, name:'Interior Solutions', color:'#06B6D4' }, { id:7, name:'Paint Pro', color:'#EC4899' }, { id:8, name:'SafeGuard Systems', color:'#6366F1' },
   ];
 
   const weatherForecast: WeatherForecastItem[] = [
     { date:new Date(2025,10,10), type:'heavy-rain', description:'Heavy rain' },
     { date:new Date(2025,10,14), type:'wind', description:'High winds' },
+    { date:new Date(2025,11,3), type:'frost', description:'Frost risk' },
   ];
 
   const getRiskColor = (score?: number) => {
@@ -546,6 +598,7 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
     visit(changedTaskId, newEndDate); return changes;
   };
 
+  // FIX: previously incomplete line in handleTaskDateChange caused a syntax error.
   const handleTaskDateChange = (taskId:number) => {
     const task = tasks.find(t=>t.id===taskId);
     if(!task) return;
@@ -558,9 +611,27 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
     }
   };
 
+  // -------------------------------
+  // Tiny runtime tests (dev only)
+  // -------------------------------
   useEffect(() => {
     const pos = getTaskPosition(tasks[0]);
     console.assert(typeof pos.left === 'string' && pos.left.endsWith('%'), 'getTaskPosition: left is %');
+    console.assert(typeof pos.width === 'string' && pos.width.endsWith('%'), 'getTaskPosition: width is %');
+
+    const t3 = tasks.find(t=>t.id===3)!;
+    const simulatedNewEnd = new Date(t3.endDate.getTime() + 3*24*60*60*1000);
+    const chain = autoScheduleTasks(3, simulatedNewEnd);
+    console.assert(Array.isArray(chain) && chain.length > 0, 'autoScheduleTasks: returns downstream changes');
+
+    console.assert(getRiskColor(8).text.includes('red'), 'getRiskColor: high -> red');
+    console.assert(getRiskColor(5).text.includes('yellow'), 'getRiskColor: medium -> yellow');
+    console.assert(getRiskColor(2).text.includes('green'), 'getRiskColor: low -> green');
+    console.assert(getWeatherIcon('cloud') === '⛅', 'getWeatherIcon: default icon for cloud');
+
+    const todayPct = parseFloat(getTodayPosition());
+    console.assert(!Number.isNaN(todayPct), 'getTodayPosition: returns numeric %');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -579,16 +650,18 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
         </div>
       </div>
 
+      {/* Controls */}
       <div className="px-6 py-3 flex flex-wrap items-center gap-2 text-sm bg-white/60">
         <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={showCriticalPath} onChange={e=>setShowCriticalPath(e.target.checked)}/> Critical path</label>
         <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={showBaseline} onChange={e=>setShowBaseline(e.target.checked)}/> Baseline</label>
         <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={showWeatherImpact} onChange={e=>setShowWeatherImpact(e.target.checked)}/> Weather markers</label>
         <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={showRiskOverlay} onChange={e=>setShowRiskOverlay(e.target.checked)}/> Risk overlay</label>
-        <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={autoScheduleEnabled} onChange={e=>setAutoScheduleEnabled(e.target.checked)}/> Auto-schedule</label>
+        <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-300"><input type="checkbox" checked={autoScheduleEnabled} onChange={e=>setAutoScheduleEnabled(e.target.checked)}/> Auto‑schedule</label>
       </div>
 
       {viewMode==='gantt' && (
         <div className="min-w-max">
+          {/* Timeline header */}
           <div className="flex bg-white border-b-2 border-gray-300 sticky top-[160px] z-20">
             <div className="w-80 p-4 border-r-2 border-gray-300 font-semibold bg-gray-50">Task / Phase</div>
             <div className="flex-1 flex">
@@ -598,12 +671,14 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
             </div>
           </div>
 
+          {/* Today line */}
           <div className="relative">
             <div className="absolute top-0 bottom-0 w-0.5 bg-red-500 z-20 pointer-events-none" style={{ left: `calc(${getTodayPosition()} + 320px)` }}>
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-1 bg-red-500 text-white text-xs font-medium rounded whitespace-nowrap">Today</div>
             </div>
           </div>
 
+          {/* Weather markers */}
           {showWeatherImpact && weatherForecast.map((w,idx)=>{
             const pos = getTaskPosition({ startDate:w.date, endDate:w.date });
             return (
@@ -613,12 +688,14 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
             );
           })}
 
+          {/* Rows */}
           {tasks.map((task)=>{
             const position = getTaskPosition(task);
             const baselinePosition = showBaseline ? getTaskPosition({ startDate: task.baselineStart, endDate: task.baselineEnd }) : null;
             const riskColors = getRiskColor(task.riskScore);
             return (
               <div key={task.id} className="flex border-b border-gray-200 hover:bg-gray-50 transition group relative">
+                {/* Left list */}
                 <div className="w-80 p-4 border-r border-gray-200 flex items-center gap-2">
                   <div className="flex-1">
                     <div className="font-medium text-sm flex items-center gap-2">
@@ -638,9 +715,10 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
                   )}
                 </div>
 
+                {/* Bars */}
                 <div className="flex-1 relative p-2">
                   {showBaseline && baselinePosition && (<div className="absolute top-5 h-2 bg-gray-300 opacity-50 rounded" style={baselinePosition} title="Baseline"/>) }
-                  <div className={`absolute top-2 h-8 rounded-lg flex items-center justify-between px-2 text-xs font-medium transition-all cursor-move ${task.status==='completed'?'bg-green-500 text-white': task.status==='in-progress'?'bg-blue-500 text-white': task.critical && showCriticalPath ? 'bg-red-500 text-white':'bg-gray-300 text-gray-700'}`} style={position} onClick={()=>setSelectedTask(task)} draggable onDragStart={()=>setDraggedTask(task)} onDragEnd={()=>setDraggedTask(null)}>
+                  <div className={`absolute top-2 h-8 rounded-lg flex items-center justify-between px-2 text-xs font-medium transition-all cursor-move ${task.status==='completed'?'bg-green-500 text-white': task.status==='in-progress'?'bg-blue-500 text-white': task.critical && showCriticalPath ? 'bg-red-500 text-white':'bg-gray-300 text-gray-700'} ${draggedTask?.id===task.id?'opacity-50':''} ${showRiskOverlay && (task.riskScore??0)>=7 ? 'ring-2 ring-red-400': showRiskOverlay && (task.riskScore??0)>=4 ? 'ring-2 ring-yellow-400':''}`} style={position} onClick={()=>setSelectedTask(task)} draggable onDragStart={()=>setDraggedTask(task)} onDragEnd={()=>setDraggedTask(null)}>
                     <span className="truncate">{task.progress}%</span>
                     {task.status==='in-progress' && (
                       <div className="w-full h-1 bg-white/30 rounded-full absolute bottom-1 left-0 right-0 mx-2"><div className="h-1 bg-white rounded-full" style={{ width: `${task.progress}%` }} /></div>
@@ -656,23 +734,44 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
       {viewMode==='resource' && (
         <div className="space-y-6 p-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {contractors.map(c=> {
-              const active = tasks.filter(t=>t.assigneeId===c.id && t.status!=='completed');
-              const workload = active.reduce((acc,t)=> acc + (100 - t.progress), 0);
-              const width = Math.min(workload, 100);
-              return (
-                <div key={c.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor:c.color }}>{c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
-                    <div className="flex-1"><div className="font-semibold text-sm">{c.name}</div><div className="text-xs text-gray-500">{active.length} active tasks</div></div>
-                  </div>
-                  <div className="mb-3">
-                    <div className="flex justify-between text-xs mb-1"><span className="text-gray-600">Workload</span><span className={`${workload>300?'text-red-600': workload>200?'text-yellow-600':'text-green-600'} font-medium`}>{Math.round(workload)}%</span></div>
-                    <div className="w-full bg-gray-200 rounded-full h-2"><div className={`${workload>300?'bg-red-500': workload>200?'bg-yellow-500':'bg-green-500'} h-2 rounded-full transition-all`} style={{ width: `${width}%` }} /></div>
+            {workloadData.map(c=> (
+              <div key={c.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor:c.color }}>{c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+                  <div className="flex-1"><div className="font-semibold text-sm">{c.name}</div><div className="text-xs text-gray-500">{c.activeCount} active tasks</div></div>
+                </div>
+                <div className="mb-3">
+                  <div className="flex justify-between text-xs mb-1"><span className="text-gray-600">Workload</span><span className={`${c.workload>300?'text-red-600': c.workload>200?'text-yellow-600':'text-green-600'} font-medium`}>{Math.round(c.workload)}%</span></div>
+                  <div className="w-full bg-gray-200 rounded-full h-2"><div className={`${c.workload>300?'bg-red-500': c.workload>200?'bg-yellow-500':'bg-green-500'} h-2 rounded-full transition-all`} style={{ width: `${Math.min(c.workload,100)}%` }} /></div>
+                </div>
+                <div className="space-y-2">
+                  {tasks.filter(t=>t.assigneeId===c.id && t.status!=='completed').map(t=> (
+                    <div key={t.id} className="text-xs p-2 bg-gray-50 rounded flex items-center justify-between"><span className="truncate">{t.name}</span><span className="ml-2 font-medium">{t.progress}%</span></div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Resource Timeline</h3>
+            <div className="space-y-3">
+              {contractors.map(c=> (
+                <div key={c.id} className="flex items-center gap-4">
+                  <div className="w-40 font-medium text-sm">{c.name}</div>
+                  <div className="flex-1 relative h-8 bg-gray-100 rounded">
+                    {tasks.filter(t=>t.assigneeId===c.id).map(t=> {
+                      const pos = getTaskPosition(t);
+                      return (
+                        <div key={t.id} className="absolute top-0 h-8 rounded flex items-center justify-center text-xs text-white font-medium cursor-pointer hover:opacity-80" style={{ ...pos, backgroundColor:c.color, opacity:t.status==='completed'?0.5:1 }} title={t.name} onClick={()=>setSelectedTask(t)}>
+                          {t.name.slice(0,15)}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -684,23 +783,52 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
             <BudgetTile title="Spent to Date" value={`£${(project.spentBudget/1_000_000).toFixed(2)}M`} icon={<TrendingUp className="w-5 h-5 text-green-600"/>} variance={project.spentBudget - (project.totalBudget * (project.progress/100))} />
             <BudgetTile title="Forecast at Completion" value={`£${(project.forecastBudget/1_000_000).toFixed(2)}M`} icon={<BarChart2 className="w-5 h-5 text-purple-600"/>} forecastDelta={project.forecastBudget - project.totalBudget} base={project.totalBudget} />
           </div>
-        </div>
-      )}
 
-      {showExportModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-lg w-full">
-            <div className="p-6 border-b border-gray-200"><h3 className="text-xl font-semibold">Export Project Timeline</h3></div>
-            <div className="p-6 space-y-4">Choose format in a future version…</div>
-            <div className="p-6 border-t border-gray-200 flex gap-3"><button onClick={()=>setShowExportModal(false)} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-medium hover:bg-gray-50">Close</button></div>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Budget by Task</h3>
+            <div className="space-y-3">
+              {tasks.map(t=> { const variance = t.spent - (t.budget * (t.progress/100)); return (
+                <div key={t.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="flex-1">
+                    <div className="font-medium text-sm mb-1">{t.name}</div>
+                    <div className="flex items-center gap-4 text-xs text-gray-600"><span>Budget: £{(t.budget/1_000).toFixed(0)}k</span><span>Spent: £{(t.spent/1_000).toFixed(0)}k</span><span className={`${variance>0?'text-red-600':'text-green-600'} font-medium`}>{variance>0?'+':''}£{(variance/1_000).toFixed(0)}k</span></div>
+                  </div>
+                  <div className="w-32">
+                    <div className="w-full bg-gray-200 rounded-full h-2"><div className={`${(t.spent/t.budget)*100>100?'bg-red-500': (t.spent/t.budget)*100>90?'bg-yellow-500':'bg-green-500'} h-2 rounded-full`} style={{ width: `${Math.min((t.spent/t.budget)*100, 100)}%` }} /></div>
+                    <div className="text-xs text-center mt-1 text-gray-600">{((t.spent/t.budget)*100).toFixed(0)}% used</div>
+                  </div>
+                </div>
+              );})}
+            </div>
           </div>
         </div>
       )}
 
+      {/* Export Modal */}
+      {showExportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-lg w-full">
+            <div className="p-6 border-b border-gray-200"><h3 className="text-xl font-semibold">Export Project Timeline</h3></div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Export Format</label>
+                <div className="space-y-2">
+                  {['PDF Document','Excel Spreadsheet','MS Project File','PNG Image'].map(format=> (
+                    <label key={format} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"><input type="radio" name="format" className="w-4 h-4" defaultChecked={format==='PDF Document'} /> <div className="flex-1"><div className="font-medium text-sm">{format}</div></div> <FileText className="w-5 h-5 text-gray-400"/></label>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="p-6 border-t border-gray-200 flex gap-3"><button onClick={()=>setShowExportModal(false)} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-medium hover:bg-gray-50">Cancel</button><button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"><Download className="w-4 h-4 inline mr-2"/>Export</button></div>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Modal */}
       {showScheduleModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-2xl w-full">
-            <div className="p-6 border-b border-gray-200"><h3 className="text-xl font-semibold">Auto-schedule changes</h3><p className="text-sm text-gray-600 mt-1">Simulated 3-day delay on a predecessor. Review suggested shifts.</p></div>
+            <div className="p-6 border-b border-gray-200"><h3 className="text-xl font-semibold">Auto‑schedule changes</h3><p className="text-sm text-gray-600 mt-1">Simulated 3‑day delay on a predecessor. Review suggested shifts.</p></div>
             <div className="p-6 max-h-[60vh] overflow-auto">
               <table className="w-full text-sm"><thead><tr className="text-left text-gray-600"><th className="py-2 pr-3">Task</th><th className="py-2 pr-3">Old</th><th className="py-2 pr-3">New</th><th className="py-2">Δ days</th></tr></thead><tbody>
                 {schedulingChanges.map(c=> (
@@ -713,6 +841,7 @@ const GanttSuite: React.FC<{ onBack: ()=>void }> = ({ onBack }) => {
         </div>
       )}
 
+      {/* Task panel */}
       {selectedTask && (
         <div className="fixed right-4 bottom-4 w-96 bg-white border border-gray-200 rounded-xl shadow-xl">
           <div className="p-4 border-b flex items-center justify-between">
